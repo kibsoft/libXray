@@ -16,7 +16,7 @@
 
 依赖 git 和 go。
 
-默认情况下，编译脚本不会 clone Xray-core，而是通过 Go modules 将 Xray-core 固定到自定义 fork [kibsoft/Xray-core](https://github.com/kibsoft/Xray-core/tree/26.6.27_patch) 的 `26.6.27_patch` 分支（Go 会记录为 pseudo-version `v1.260327.1-0.20260711200532-739e6da184ca`）。
+默认情况下，编译脚本不会 clone Xray-core，而是通过 Go modules 将 Xray-core 固定到自定义 fork [kibsoft/Xray-core](https://github.com/kibsoft/Xray-core/tree/26.6.27_patch) 的 `26.6.27_patch` 分支（Go 会记录为 pseudo-version `v1.260327.1-0.20260910185316-2e3221ece444`）。
 传入可选参数 `local` 时，会通过 Go module `replace` 改用已有的本地仓库 `../Xray-core`，覆盖 fork。
 
 ### 使用方式
