@@ -1,6 +1,7 @@
 package xray
 
 import (
+	"context"
 	"os"
 	"runtime/debug"
 	"strconv"
@@ -10,13 +11,45 @@ import (
 	"github.com/xtls/xray-core/common/cmdarg"
 	"github.com/xtls/xray-core/common/platform"
 	"github.com/xtls/xray-core/core"
+	"github.com/xtls/xray-core/features/extension"
+	"github.com/xtls/xray-core/features/outbound"
 	_ "github.com/xtls/xray-core/main/distro/all"
+	"github.com/xtls/xray-core/transport/internet/splithttp"
 )
 
 var (
 	coreServer   *core.Instance
 	coreServerMu sync.Mutex
 )
+
+// NetworkChangeReady is called under the embedding application's lifecycle lock.
+func NetworkChangeReady() bool {
+	if coreServer == nil {
+		return false
+	}
+	if observer, ok := coreServer.GetFeature(extension.ObservatoryType()).(interface{ NetworkChangeReady() bool }); ok {
+		return observer.NetworkChangeReady()
+	}
+	return true
+}
+
+// NotifyNetworkChanged is called under the embedding application's lifecycle lock.
+func NotifyNetworkChanged() {
+	if coreServer == nil {
+		return
+	}
+	if observer, ok := coreServer.GetFeature(extension.ObservatoryType()).(interface{ NotifyNetworkChanged() }); ok {
+		observer.NotifyNetworkChanged()
+	}
+	splithttp.ResetConnections()
+	if manager, ok := coreServer.GetFeature(outbound.ManagerType()).(outbound.Manager); ok {
+		for _, handler := range manager.ListHandlers(context.Background()) {
+			if resetter, ok := handler.(interface{ ResetNetworkConnections() }); ok {
+				resetter.ResetNetworkConnections()
+			}
+		}
+	}
+}
 
 func StartXray(configPath string) (*core.Instance, error) {
 	file := cmdarg.Arg{configPath}
