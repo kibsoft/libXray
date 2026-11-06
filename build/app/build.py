@@ -19,12 +19,13 @@ LOCAL_XRAY_CORE_DIR_NAME = "Xray-core"
 
 
 class Builder(object):
-    def __init__(self, build_dir: str, use_local_xray_core: bool = False):
+    def __init__(self, build_dir: str, use_local_xray_core: bool = False, xray_core_dir: str | None = None):
         self.build_dir = build_dir
         self.lib_dir = os.path.abspath(os.path.join(self.build_dir, ".."))
         self.bin_file = "xray"
-        self.use_local_xray_core = use_local_xray_core
-        self.xray_core_replace_path = f"../{LOCAL_XRAY_CORE_DIR_NAME}"
+        explicit_core = xray_core_dir or os.environ.get("LIBXRAY_CORE_DIR")
+        self.use_local_xray_core = use_local_xray_core or bool(explicit_core)
+        self.xray_core_replace_path = os.path.abspath(explicit_core) if explicit_core else f"../{LOCAL_XRAY_CORE_DIR_NAME}"
         self.xray_core_dir = os.path.abspath(
             os.path.join(self.lib_dir, self.xray_core_replace_path)
         )
@@ -93,19 +94,19 @@ class Builder(object):
 
     def prepare_gomobile(self):
         ret = subprocess.run(
-            ["go", "install", "golang.org/x/mobile/cmd/gomobile@latest"]
+            ["go", "install", "golang.org/x/mobile/cmd/gomobile@v0.0.0-20261011034528-197770444867"]
         )
         if ret.returncode != 0:
             raise Exception("go install gomobile failed")
         ret = subprocess.run(["gomobile", "init"])
         if ret.returncode != 0:
             raise Exception("gomobile init failed")
-        ret = subprocess.run(["go", "get", "golang.org/x/mobile/cmd/gomobile"])
+        ret = subprocess.run(["go", "get", "golang.org/x/mobile@v0.0.0-20261011034528-197770444867"])
         if ret.returncode != 0:
-            raise Exception("gomobile update failed")
-        ret = subprocess.run(["go", "get", "google.golang.org/genproto"])
+            raise Exception("gomobile module setup failed")
+        ret = subprocess.run(["go", "install", "golang.org/x/mobile/cmd/gobind@v0.0.0-20261011034528-197770444867"])
         if ret.returncode != 0:
-            raise Exception("gomobile install genproto failed")
+            raise Exception("gobind install failed")
 
     def prepare_static_lib(self):
         self.copy_template_file()
@@ -138,7 +139,8 @@ class Builder(object):
     def before_build(self):
         self.prepare_xray_core()
         self.init_go_env()
-        self.download_geo()
+        if os.environ.get("LIBXRAY_SKIP_GEO") != "1":
+            self.download_geo()
 
     def build(self):
         pass

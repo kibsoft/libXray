@@ -19,7 +19,8 @@ class AppleGoMobileBuilder(Builder):
                 "gomobile",
                 "bind",
                 "-target",
-                "ios,iossimulator,macos,maccatalyst",
+                "ios/arm64,iossimulator/arm64,iossimulator/amd64,macos/arm64,macos/amd64",
+                "-ldflags=-checklinkname=0",
                 "-iosversion",
                 "15.0",
             ]

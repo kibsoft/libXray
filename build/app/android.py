@@ -25,7 +25,7 @@ class AndroidBuilder(Builder):
                 "-target",
                 "android",
                 "-androidapi",
-                "21",
+                os.environ.get("LIBXRAY_ANDROID_API", "28"),
                 "-ldflags=-checklinkname=0 -extldflags=-Wl,-z,max-page-size=16384",
             ]
         )

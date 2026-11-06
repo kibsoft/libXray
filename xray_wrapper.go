@@ -16,16 +16,6 @@ func SetTunFd(fd int32) {
 	xray.SetTunFd(fd)
 }
 
-// NotifyNetworkChanged schedules a fresh direct canary check without restarting Xray.
-func NotifyNetworkChanged() {
-	xray.NotifyNetworkChanged()
-}
-
-// NetworkChangeReady reports that routing has settled on the new physical path.
-func NetworkChangeReady() bool {
-	return xray.NetworkChangeReady()
-}
-
 type CountGeoDataRequest struct {
 	DatDir  string `json:"datDir,omitempty"`
 	Name    string `json:"name,omitempty"`

@@ -40,10 +40,14 @@ Compile script. It is recommended to always use this script to compile libXray. 
 
 depends on git and go.
 
-By default, the build script does not clone Xray-core. It uses Go modules and pins Xray-core to the custom fork [kibsoft/Xray-core](https://github.com/kibsoft/Xray-core/tree/26.6.27_patch) branch `26.6.27_patch` (recorded by Go as pseudo-version `v1.260327.1-0.20261106164658-bfb0d9b86a9a`).
-Pass the optional `local` argument to use an existing local checkout at `../Xray-core` through a Go module `replace`, which overrides the fork.
+Standalone builds pin the custom `kibsoft/Xray-core` module. Embedding projects should pass
+`--xray-core /absolute/path/to/Xray-core --skip-geo` to build their exact pinned checkout.
+The legacy `local` argument still selects `../Xray-core`.
+Go 1.26.3 and gomobile/gobind `v0.0.0-20261011034528-197770444867` are used.
+Build in an isolated source copy: the builders temporarily rewrite Go package declarations.
 
-Network-change recovery requires the matching local Xray-core checkout. Use `python3 build/main.py android local` until these core changes have been published and the default fork pin has been updated. `NotifyNetworkChanged()` retires old XHTTP/mux pools and active requests, then schedules a fresh network canary without restarting Xray. `NetworkChangeReady()` reports when routing is ready for the new physical path.
+`NotifyNetworkChanged()` cancels old health checks, retires XHTTP/mux connections and
+checks the new network without restarting Xray. `NetworkChangeReady()` reports routing readiness.
 
 ### Usage
 
