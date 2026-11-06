@@ -13,8 +13,8 @@ LIBXRAY_MOD_NAME = "github.com/xtls/libxray"
 XRAY_CORE_MOD_NAME = "github.com/xtls/xray-core"
 XRAY_CORE_FORK_REPO = "github.com/kibsoft/Xray-core"
 XRAY_CORE_FORK_REF = "26.6.27_patch"
-# Resolved pseudo-version after go mod tidy (commit 24f9e2f39604).
-DEFAULT_XRAY_CORE_FORK_VERSION = "v1.260327.1-0.20260921113853-24f9e2f39604"
+# Resolved pseudo-version after go mod tidy (commit bfb0d9b86a9a).
+DEFAULT_XRAY_CORE_FORK_VERSION = "v1.260327.1-0.20261106164658-bfb0d9b86a9a"
 LOCAL_XRAY_CORE_DIR_NAME = "Xray-core"
 
 

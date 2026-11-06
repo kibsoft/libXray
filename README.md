@@ -40,7 +40,7 @@ Compile script. It is recommended to always use this script to compile libXray. 
 
 depends on git and go.
 
-By default, the build script does not clone Xray-core. It uses Go modules and pins Xray-core to the custom fork [kibsoft/Xray-core](https://github.com/kibsoft/Xray-core/tree/26.6.27_patch) branch `26.6.27_patch` (recorded by Go as pseudo-version `v1.260327.1-0.20260910185316-2e3221ece444`).
+By default, the build script does not clone Xray-core. It uses Go modules and pins Xray-core to the custom fork [kibsoft/Xray-core](https://github.com/kibsoft/Xray-core/tree/26.6.27_patch) branch `26.6.27_patch` (recorded by Go as pseudo-version `v1.260327.1-0.20261106164658-bfb0d9b86a9a`).
 Pass the optional `local` argument to use an existing local checkout at `../Xray-core` through a Go module `replace`, which overrides the fork.
 
 ### Usage

@@ -4,6 +4,7 @@ import (
 	"os"
 	"runtime/debug"
 	"strconv"
+	"sync"
 
 	"github.com/xtls/libxray/memory"
 	"github.com/xtls/xray-core/common/cmdarg"
@@ -13,7 +14,8 @@ import (
 )
 
 var (
-	coreServer *core.Instance
+	coreServer   *core.Instance
+	coreServerMu sync.Mutex
 )
 
 func StartXray(configPath string) (*core.Instance, error) {
@@ -59,6 +61,8 @@ func InitEnv(datDir string) {
 // datDir means the dir which geosite.dat and geoip.dat are in.
 // configPath means the config.json file path.
 func RunXray(datDir, configPath string) (err error) {
+	coreServerMu.Lock()
+	defer coreServerMu.Unlock()
 	InitEnv(datDir)
 	memory.InitForceFree()
 	coreServer, err = StartXray(configPath)
@@ -78,6 +82,8 @@ func RunXray(datDir, configPath string) (err error) {
 // datDir means the dir which geosite.dat and geoip.dat are in.
 // configJSON means the JSON configuration string.
 func RunXrayFromJSON(datDir, configJSON string) (err error) {
+	coreServerMu.Lock()
+	defer coreServerMu.Unlock()
 	InitEnv(datDir)
 	memory.InitForceFree()
 	coreServer, err = StartXrayFromJSON(configJSON)
@@ -91,11 +97,15 @@ func RunXrayFromJSON(datDir, configJSON string) (err error) {
 
 // Get Xray State
 func GetXrayState() bool {
+	coreServerMu.Lock()
+	defer coreServerMu.Unlock()
 	return coreServer != nil && coreServer.IsRunning()
 }
 
 // Stop Xray instance.
 func StopXray() error {
+	coreServerMu.Lock()
+	defer coreServerMu.Unlock()
 	if coreServer != nil {
 		err := coreServer.Close()
 		coreServer = nil
