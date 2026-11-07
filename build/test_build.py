@@ -136,10 +136,10 @@ class BuildTest(unittest.TestCase):
                         "go", "mod", "edit", f"-replace={XRAY_CORE_MOD_NAME}=../Xray-core",
                     ]))
                 else:
-                    expected.extend([
-                        call(["go", "mod", "edit", f"-dropreplace={XRAY_CORE_MOD_NAME}"]),
-                        call(["go", "get", f"{XRAY_CORE_MOD_NAME}@{DEFAULT_XRAY_CORE_VERSION}"]),
-                    ])
+                    expected.append(call([
+                        "go", "mod", "edit",
+                        f"-replace={XRAY_CORE_MOD_NAME}=github.com/kibsoft/Xray-core@{DEFAULT_XRAY_CORE_VERSION}",
+                    ]))
                 expected.append(call(["go", "mod", "tidy"]))
                 self.assertEqual(commands.call_args_list, expected)
 

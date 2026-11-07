@@ -16,7 +16,7 @@
 
 依赖 git 和 go。
 
-默认情况下，编译脚本不会 clone [Xray-core](https://github.com/XTLS/Xray-core)，而是通过 Go modules 的 pseudo-version 将 Xray-core 固定到发布版本 `v26.10.31`。
+默认情况下，编译脚本不会 clone [Xray-core](https://github.com/XTLS/Xray-core)，而是通过 Go modules 将 Chaos VPN 分支 `github.com/kibsoft/Xray-core` 固定为 `v1.260327.1-0.20261107185451-3161b1178a45`（基于 v26.10.31，包含有界快速恢复）。`go.mod` 和 `build/app/build.py` 使用相同的固定版本。
 传入可选参数 `local` 时，会通过 Go module `replace` 改用已有的本地仓库 `../Xray-core`。
 
 ### 使用方式

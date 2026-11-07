@@ -10,7 +10,7 @@ from app.cmd import (
 LIBXRAY_MOD_NAME = "github.com/xtls/libxray"
 XRAY_CORE_MOD_NAME = "github.com/xtls/xray-core"
 # Pinned Chaos VPN merge of upstream v26.10.31 and custom network routing.
-DEFAULT_XRAY_CORE_VERSION = "v1.260327.1-0.20261107120014-67cf7d322cfa"
+DEFAULT_XRAY_CORE_VERSION = "v1.260327.1-0.20261107185451-3161b1178a45"
 LOCAL_XRAY_CORE_DIR_NAME = "Xray-core"
 
 

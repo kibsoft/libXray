@@ -24,8 +24,8 @@ github.com/jackpal/go-nat-pmp v1.1.0 h1:UInMLPV1VQdP860ggNiz0YxGvJH/bWzxL099y+1E
 github.com/jackpal/go-nat-pmp v1.1.0/go.mod h1:m9o4DK1wHA4h2pPpErD5vwzWLf91tJcfNQ3QyUIbh5A=
 github.com/juju/ratelimit v1.0.2 h1:sRxmtRiajbvrcLQT7S+JbqU0ntsb9W2yhSdNN8tWfaI=
 github.com/juju/ratelimit v1.0.2/go.mod h1:qapgC/Gy+xNh9UxzV13HGGl/6UXNN+ct+vwSgWNm/qk=
-github.com/kibsoft/Xray-core v1.260327.1-0.20261107120014-67cf7d322cfa h1:iKAvAjn2vHg2mvDIKq9dvOc035Ld2P8spI0p1DcGaRw=
-github.com/kibsoft/Xray-core v1.260327.1-0.20261107120014-67cf7d322cfa/go.mod h1:/Umx7vpU+A78gOOuKl6ESU6eQJ5EBRhwr5cl7+9/drw=
+github.com/kibsoft/Xray-core v1.260327.1-0.20261107185451-3161b1178a45 h1:lAvUmZHGoa8SoZp/woiuQsnDsCGKu4NC2YBUOF+15o0=
+github.com/kibsoft/Xray-core v1.260327.1-0.20261107185451-3161b1178a45/go.mod h1:/Umx7vpU+A78gOOuKl6ESU6eQJ5EBRhwr5cl7+9/drw=
 github.com/klauspost/compress v1.20.3 h1:zWNoFqq/lSuYQRim3dUXlXeA0IqwuZGicdG5ZTfY5j4=
 github.com/klauspost/compress v1.20.3/go.mod h1:LUdAzn7YLVvxLpc7y3V1m40wESHTgc1422pwwBSKYuI=
 github.com/klauspost/cpuid/v2 v2.4.1 h1:I9KxadAkvo+QjtcEE2f2tyfEvmIla/T0m+14PrZNl0U=
