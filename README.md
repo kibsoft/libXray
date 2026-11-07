@@ -637,3 +637,9 @@ Start and stop Xray instances.
 # License
 
 This repository is based on the MIT License.
+
+## Chaos VPN fork integration
+
+The 26.10.31_patch branch preserves physical-network recovery. Invoke v3 additionally accepts `notifyNetworkChanged` (no payload, empty success data) and `networkChangeReady` (data.ready boolean). No legacy exported wrapper methods are restored. The standalone builder pins the same fork core as go.mod; app builds pass an explicit core source directory.
+
+GitHub Actions are disabled for this fork. Build locally on Windows or the operator Mac mini.

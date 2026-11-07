@@ -35,6 +35,13 @@ func Invoke(requestJSON string) string {
 	}
 
 	switch request.Method {
+	case "notifyNetworkChanged":
+		xray.NotifyNetworkChanged()
+		return encodeInvokeNoDataResponse(nil)
+	case "networkChangeReady":
+		return encodeInvokeResponse(struct {
+			Ready bool `json:"ready"`
+		}{xray.NetworkChangeReady()}, nil)
 	case LibXrayMethodGetFreePorts:
 		return invokeGetFreePorts(request.Payload)
 	case LibXrayMethodDecodeSubscriptionText:

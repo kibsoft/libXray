@@ -18,10 +18,9 @@ name: Go module mirror tag
 # This workflow listens for CalVer pushes and creates the matching v1.* tag.
 
 on:
-  push:
-    tags:
-      - 'v[0-9]*.[0-9]*.[0-9]*'
-
+  workflow_dispatch:
+  release:
+    types: [published]
 jobs:
   mirror:
     name: Mirror CalVer tag to v1.YYMMDD.N

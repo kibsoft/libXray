@@ -9,8 +9,8 @@ from app.cmd import (
 
 LIBXRAY_MOD_NAME = "github.com/xtls/libxray"
 XRAY_CORE_MOD_NAME = "github.com/xtls/xray-core"
-# Go modules resolve the Xray-core v26.10.31 release tag through this version.
-DEFAULT_XRAY_CORE_VERSION = "v1.260327.1-0.20261031132019-a4a3dff5b20c"
+# Pinned Chaos VPN merge of upstream v26.10.31 and custom network routing.
+DEFAULT_XRAY_CORE_VERSION = "v1.260327.1-0.20261107120014-67cf7d322cfa"
 LOCAL_XRAY_CORE_DIR_NAME = "Xray-core"
 
 
@@ -23,9 +23,10 @@ class Builder(object):
     ):
         self.build_dir = build_dir
         self.lib_dir = os.path.abspath(os.path.join(self.build_dir, ".."))
-        self.use_local_xray_core = use_local_xray_core
+        explicit_core = os.environ.get("LIBXRAY_CORE_DIR")
+        self.use_local_xray_core = use_local_xray_core or bool(explicit_core)
         self.keep_go_env_snapshot = keep_go_env_snapshot
-        self.xray_core_replace_path = f"../{LOCAL_XRAY_CORE_DIR_NAME}"
+        self.xray_core_replace_path = os.path.abspath(explicit_core) if explicit_core else f"../{LOCAL_XRAY_CORE_DIR_NAME}"
         self.xray_core_dir = os.path.abspath(
             os.path.join(self.lib_dir, self.xray_core_replace_path)
         )
@@ -96,16 +97,10 @@ class Builder(object):
                 raise Exception("go mod edit replace failed")
         else:
             ret = subprocess.run(
-                ["go", "mod", "edit", f"-dropreplace={XRAY_CORE_MOD_NAME}"]
+                ["go", "mod", "edit", f"-replace={XRAY_CORE_MOD_NAME}=github.com/kibsoft/Xray-core@{DEFAULT_XRAY_CORE_VERSION}"]
             )
             if ret.returncode != 0:
-                raise Exception("go mod edit dropreplace failed")
-
-            ret = subprocess.run(
-                ["go", "get", f"{XRAY_CORE_MOD_NAME}@{DEFAULT_XRAY_CORE_VERSION}"]
-            )
-            if ret.returncode != 0:
-                raise Exception("go get xray-core failed")
+                raise Exception("go mod edit fork replace failed")
 
         ret = subprocess.run(
             [
@@ -198,7 +193,8 @@ class Builder(object):
     def before_build(self):
         self.prepare_xray_core()
         self.init_go_env()
-        self.download_geo()
+        if os.environ.get("LIBXRAY_SKIP_GEO") != "1":
+            self.download_geo()
 
     def build(self):
         pass

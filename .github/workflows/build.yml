@@ -2,10 +2,6 @@ name: Build libXray
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - "v*"
-
 concurrency:
   group: build-libxray-${{ github.ref }}
   cancel-in-progress: false
